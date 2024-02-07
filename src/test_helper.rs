@@ -18,6 +18,8 @@ pub(crate) fn within_test_dir(f: fn(path: PathBuf)) {
         f(path);
     });
 
+
+
     fs::remove_dir_all(test_dir).expect("remove test dir");
 
     if let Err(e) = result {
@@ -28,6 +30,7 @@ pub(crate) fn within_test_dir(f: fn(path: PathBuf)) {
     }
 }
 
+
 #[cfg(feature = "crates")]
 pub(crate) fn mock_crates(pkg: &Package, status: usize, data_path: &str) -> (Mock, String) {
     let mock_path = format!("/api/v1/crates/{}/versions", pkg);
@@ -35,6 +38,7 @@ pub(crate) fn mock_crates(pkg: &Package, status: usize, data_path: &str) -> (Moc
 
     (mock_http(&mock_path, status, &data), data)
 }
+
 
 #[cfg(feature = "github")]
 pub(crate) fn mock_github(pkg: &Package, status: usize, data_path: &str) -> (Mock, String) {
@@ -44,6 +48,7 @@ pub(crate) fn mock_github(pkg: &Package, status: usize, data_path: &str) -> (Moc
     (mock_http(&mock_path, status, &data), data)
 }
 
+
 #[cfg(feature = "npm")]
 pub(crate) fn mock_npm(pkg: &Package, status: usize, data_path: &str) -> (Mock, String) {
     let mock_path = format!("/{}/latest", pkg);
@@ -52,12 +57,13 @@ pub(crate) fn mock_npm(pkg: &Package, status: usize, data_path: &str) -> (Mock, 
     (mock_http(&mock_path, status, &data), data)
 }
 
+
 #[cfg(feature = "pypi")]
-pub(crate) fn mock_pypi(pkg: &Package, status: usize, data_path: &str) -> (Mock, String) {
+pub(crate) fn mock_pypi(pkg: &Package, status: usize, data_path: &str) -> (Mock, String) {   
     let mock_path = format!("/pypi/{}/json", pkg);
     let data = fs::read_to_string(data_path).expect("read file to string");
 
-    (mock_http(&mock_path, status, &data), data)
+    (mock_http(&mock_path, status, &data), data)  
 }
 
 pub(crate) fn mock_http(path: &str, status: usize, body: &str) -> Mock {
@@ -66,4 +72,4 @@ pub(crate) fn mock_http(path: &str, status: usize, body: &str) -> Mock {
         .with_header("Content-Type", "application/json; charset=utf-8")
         .with_body(body)
         .create()
-}
+}  
